@@ -1223,7 +1223,7 @@ void WebContents::InspectServiceWorker() {
 }
 
 void WebContents::HasServiceWorker(
-    const base::Callback<void(bool)>& callback) {
+    const base::Callback<void(content::ServiceWorkerCapability)>& callback) {
   auto context = GetServiceWorkerContext(web_contents());
   if (!context)
     return;
