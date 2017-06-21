@@ -1223,14 +1223,18 @@ void WebContents::InspectServiceWorker() {
 }
 
 void WebContents::HasServiceWorker(
-    const base::Callback<void(content::ServiceWorkerCapability)>& callback) {
+    const base::Callback<void(bool)>& callback) {
   auto context = GetServiceWorkerContext(web_contents());
   if (!context)
     return;
 
+  auto wrapped_callback = [callback](content::ServiceWorkerCapability capability) {
+    callback.Run(capability != content::ServiceWorkerCapability::NO_SERVICE_WORKER);
+  }
+
   context->CheckHasServiceWorker(web_contents()->GetLastCommittedURL(),
                                  GURL::EmptyGURL(),
-                                 callback);
+                                 wrapped_callback);
 }
 
 void WebContents::UnregisterServiceWorker(
