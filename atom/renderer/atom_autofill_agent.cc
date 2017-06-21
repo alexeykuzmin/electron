@@ -164,17 +164,17 @@ void AutofillAgent::ShowSuggestions(
 }
 
 AutofillAgent::Helper::Helper(AutofillAgent* agent)
-  : content::RenderViewObserver(agent->render_frame()->GetRenderView()),
-    agent_(agent) {
+  : content::RenderViewObserver(agent->render_frame()->GetRenderView()) {
+//    agent_(agent) {
 }
 
-void AutofillAgent::Helper::OnMouseDown(const blink::WebNode& node) {
-  agent_->focused_node_was_last_clicked_ = !node.IsNull() && node.Focused();
-}
+//void AutofillAgent::Helper::OnMouseDown(const blink::WebNode& node) {
+//  agent_->focused_node_was_last_clicked_ = !node.IsNull() && node.Focused();
+//}
 
-void AutofillAgent::Helper::FocusChangeComplete() {
-  agent_->DoFocusChangeComplete();
-}
+//void AutofillAgent::Helper::FocusChangeComplete() {
+//  agent_->DoFocusChangeComplete();
+//}
 
 bool AutofillAgent::OnMessageReceived(const IPC::Message& message) {
   bool handled = true;

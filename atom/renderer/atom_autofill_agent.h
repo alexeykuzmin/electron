@@ -35,11 +35,11 @@ class AutofillAgent : public content::RenderFrameObserver,
 
     // content::RenderViewObserver implementation.
     void OnDestruct() override {}
-    void OnMouseDown(const blink::WebNode&) override;
-    void FocusChangeComplete() override;
+//    void OnMouseDown(const blink::WebNode&) override;
+//    void FocusChangeComplete() override;
 
-   private:
-    AutofillAgent* agent_;
+//   private:
+//    AutofillAgent* agent_;
   };
   friend class Helper;
 
