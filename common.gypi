@@ -1,5 +1,6 @@
 {
   'includes': [
+    'features.gypi',
     'toolchain.gypi',
     'brightray/brightray.gypi',
   ],
@@ -245,6 +246,13 @@
       4819,  # The file contains a character that cannot be represented in the current code page
       4838,  # (atlgdi.h) conversion from 'int' to 'UINT' requires a narrowing conversion
       4996,  # (atlapp.h) 'GetVersionExW': was declared deprecated
+    ],
+    'conditions': [
+      ['enable_osr==1', {
+        'defines': [
+          'ENABLE_OSR',
+        ],
+      }],  # enable_osr==1
     ],
   },
   'conditions': [
