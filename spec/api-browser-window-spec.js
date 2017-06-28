@@ -2554,7 +2554,7 @@ describe('BrowserWindow module', function () {
     })
   })
 
-  describe('offscreen rendering', function () {
+  xdescribe('offscreen rendering', function () {
     beforeEach(function () {
       if (w != null) w.destroy()
       w = new BrowserWindow({
