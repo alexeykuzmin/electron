@@ -7,6 +7,7 @@
 #include <Quartz/Quartz.h>
 #include <string>
 
+#include "atom/browser/browser.h"
 #include "atom/browser/native_browser_view_mac.h"
 #include "atom/browser/ui/cocoa/atom_touch_bar.h"
 #include "atom/browser/window_list.h"
@@ -415,6 +416,11 @@ bool ScopedDisableResize::disable_resize_ = false;
 
 - (void)windowDidEndSheet:(NSNotification *)notification {
   shell_->NotifyWindowSheetEnd();
+}
+
+- (IBAction)newWindowForTab:(id)sender {
+  shell_->NotifyNewWindowForTab();
+  atom::Browser::Get()->NewWindowForTab();
 }
 
 @end
@@ -899,9 +905,7 @@ NativeWindowMac::NativeWindowMac(
   if (transparent() || !has_frame()) {
     if (base::mac::IsAtLeastOS10_10()) {
       // Don't show title bar.
-      if (title_bar_style_ == CUSTOM_BUTTONS_ON_HOVER) {
-        [window_ setTitlebarAppearsTransparent:YES];
-      }
+      [window_ setTitlebarAppearsTransparent:YES];
       [window_ setTitleVisibility:NSWindowTitleHidden];
     }
     // Remove non-transparent corners, see http://git.io/vfonD.

@@ -92,12 +92,14 @@ Window::Window(v8::Isolate* isolate, v8::Local<v8::Object> wrapper,
     if (options.Get("transparent", &transparent))
       web_preferences.Set("transparent", transparent);
 
+#if defined(ENABLE_OSR)
     // Offscreen windows are always created frameless.
     bool offscreen;
     if (web_preferences.Get("offscreen", &offscreen) && offscreen) {
       auto window_options = const_cast<mate::Dictionary&>(options);
       window_options.Set(options::kFrame, false);
     }
+#endif
 
     // Creates the WebContents used by BrowserWindow.
     web_contents = WebContents::Create(isolate, web_preferences);
@@ -185,6 +187,8 @@ void Window::OnWindowClosed() {
   Emit("closed");
 
   RemoveFromParentChildWindows();
+
+  ResetBrowserView();
 
   // Destroy the native class when window is closed.
   base::ThreadTaskRunnerHandle::Get()->PostTask(
@@ -298,6 +302,10 @@ void Window::OnExecuteWindowsCommand(const std::string& command_name) {
 void Window::OnTouchBarItemResult(const std::string& item_id,
                                   const base::DictionaryValue& details) {
   Emit("-touch-bar-interaction", item_id, details);
+}
+
+void Window::OnNewWindowForTab() {
+  Emit("new-window-for-tab");
 }
 
 #if defined(OS_WIN)
@@ -838,14 +846,29 @@ v8::Local<v8::Value> Window::GetBrowserView() const {
 }
 
 void Window::SetBrowserView(v8::Local<v8::Value> value) {
+  ResetBrowserView();
+
   mate::Handle<BrowserView> browser_view;
   if (value->IsNull()) {
     window_->SetBrowserView(nullptr);
-    browser_view_.Reset();
   } else if (mate::ConvertFromV8(isolate(), value, &browser_view)) {
     window_->SetBrowserView(browser_view->view());
+    browser_view->web_contents()->SetOwnerWindow(window_.get());
     browser_view_.Reset(isolate(), value);
   }
+}
+
+void Window::ResetBrowserView() {
+  if (browser_view_.IsEmpty()) {
+    return;
+  }
+
+  mate::Handle<BrowserView> browser_view;
+  if (mate::ConvertFromV8(isolate(), GetBrowserView(), &browser_view)) {
+    browser_view->web_contents()->SetOwnerWindow(nullptr);
+  }
+
+  browser_view_.Reset();
 }
 
 bool Window::IsModal() const {

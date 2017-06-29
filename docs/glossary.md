@@ -18,11 +18,24 @@ easier to use in applications.
 Brightray is a low-level dependency of Electron that does not concern the
 majority of Electron users.
 
+### CRT
+
+The C Run-time Library (CRT) is the part of the C++ Standard Library that 
+incorporates the ISO C99 standard library. The Visual C++ libraries that 
+implement the CRT support native code development, and both mixed native and 
+managed code, and pure managed code for .NET development.
+
 ### DMG
 
 An Apple Disk Image is a packaging format used by macOS. DMG files are
 commonly used for distributing application "installers". [electron-builder]
 supports `dmg` as a build target.
+
+### IME
+
+Input Method Editor. A program that allows users to enter characters and 
+symbols not found on their keyboard. For example, this allows users of Latin 
+keyboards to input Chinese, Japanese, Korean and Indic characters.
 
 ### IPC
 
@@ -67,7 +80,7 @@ building native modules.
 
 See also [Using Native Node Modules].
 
-## NSIS
+### NSIS
 
 Nullsoft Scriptable Install System is a script-driven Installer
 authoring tool for Microsoft Windows. It is released under a combination of

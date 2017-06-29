@@ -2554,7 +2554,17 @@ describe('BrowserWindow module', function () {
     })
   })
 
-  xdescribe('offscreen rendering', function () {
+  describe('offscreen rendering', function () {
+    const isOffscreenRenderingDisabled = () => {
+      const contents = webContents.create({})
+      const disabled = typeof contents.isOffscreen !== 'function'
+      contents.destroy()
+      return disabled
+    }
+
+    // Offscreen rendering can be disabled in the build
+    if (isOffscreenRenderingDisabled()) return
+
     beforeEach(function () {
       if (w != null) w.destroy()
       w = new BrowserWindow({
